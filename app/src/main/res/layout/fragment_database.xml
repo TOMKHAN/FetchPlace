@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/rl_database"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#ffffff"
+    android:orientation="vertical">
+
+    <EditText
+        android:id="@+id/et_dummy_for_focus"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:focusable="true">
+
+        <requestFocus />
+    </EditText>
+
+    <TextView
+        android:id="@+id/tv_location_name_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="5dp"
+        android:text="Location name"
+        android:textSize="25sp" />
+
+    <EditText
+        android:id="@+id/et_location_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tv_location_name_title"
+        android:layout_centerHorizontal="true"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:imeOptions="actionSearch"
+        android:inputType="text"
+        android:singleLine="true" />
+
+    <ImageButton
+        android:id="@+id/ib_location_name_change"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_alignTop="@+id/tv_location_name_title"
+        android:layout_marginLeft="5dp"
+        android:layout_toRightOf="@+id/tv_location_name_title"
+        android:background="@drawable/selector_location_name_button" />
+
+    <TextView
+        android:id="@+id/tv_location_address_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/et_location_name"
+        android:layout_centerHorizontal="true"
+        android:text="Location adress"
+        android:textSize="25sp" />
+
+    <EditText
+        android:id="@+id/et_location_address"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tv_location_address_title"
+        android:layout_centerHorizontal="true"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:imeOptions="actionSearch"
+        android:inputType="text"
+        android:singleLine="true" />
+
+    <ImageButton
+        android:id="@+id/ib_location_address_change"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_alignTop="@+id/tv_location_address_title"
+        android:layout_marginLeft="5dp"
+        android:layout_toRightOf="@+id/tv_location_address_title"
+        android:background="@drawable/selector_location_name_button" />
+
+    <TextView
+        android:id="@+id/tv_latitude"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/et_location_address"
+        android:layout_centerHorizontal="true"
+        android:layout_marginLeft="5dp"
+        android:text="Latitude"
+        android:textSize="25sp" />
+
+    <TextView
+        android:id="@+id/tv_latitude_value"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tv_latitude"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="5dp"
+        android:text="-"
+        />
+
+    <TextView
+        android:id="@+id/tv_longitude"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tv_latitude_value"
+        android:layout_centerHorizontal="true"
+        android:layout_marginLeft="5dp"
+        android:text="Longitude"
+        android:textSize="25sp" />
+
+    <TextView
+        android:id="@+id/tv_longitude_value"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tv_longitude"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="5dp"
+        android:text="-" />
+
+    <TextView
+        android:id="@+id/tv_radius_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tv_longitude_value"
+        android:layout_centerHorizontal="true"
+        android:text="Radius (meters)"
+        android:textSize="25sp" />
+
+    <EditText
+        android:id="@+id/et_radius"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tv_radius_title"
+        android:layout_centerHorizontal="true"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:imeOptions="actionDone"
+        android:inputType="number" />
+
+    <ImageButton
+        android:id="@+id/ib_radius_change"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_alignTop="@+id/tv_radius_title"
+        android:layout_marginLeft="5dp"
+        android:layout_toRightOf="@+id/tv_radius_title"
+        android:background="@drawable/selector_save_radius_button" />
+
+</RelativeLayout>
