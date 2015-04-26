@@ -9,6 +9,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.Random;
 
 import hr.foi.tosulc.fetchplace.MapFragment;
@@ -20,23 +21,35 @@ import hr.foi.tosulc.fetchplace.types.Place;
 public class JSONPlaceGetter implements PlaceGetter{
     public static final String TAG = "FetchPlace";
     @Override
-    public Place getLocationPlace(LatLng location, Context ctx) {
+    public ArrayList<Place> getLocationPlace(LatLng location, Context ctx) {
         JSONObject json = null;
 
         try {
-          json = new JSONObject(JSONParser.getJSONFromUrl("https://maps.googleapis.com/maps/api/place/nearbysearch/json?location="+location.latitude+","+location.longitude+"&radius=" + getRadiusFromSharedPreferences(ctx) +"&key=AIzaSyCbDkfctAvtaI1kcySbd-jqtkYjDUQ0yy0"));
+          json = new JSONObject(JSONParser.getJSONFromUrl("https://maps.googleapis.com/maps/api/place/nearbysearch/json?location="+location.latitude+","+location.longitude+"&radius=" + getRadiusFromSharedPreferences(ctx) +"&type=food|restaurant&key=AIzaSyCbDkfctAvtaI1kcySbd-jqtkYjDUQ0yy0"));
         } catch (JSONException e) {
             e.printStackTrace();
         }
 
         try {
+
+            JSONArray jsonPlaces = json.getJSONArray("results");
+            ArrayList<Place> places = new ArrayList<Place>();
+            for (int i = 0; i <jsonPlaces.length(); i++) {
+                JSONObject jsonPlace = jsonPlaces.getJSONObject(i);
+                JSONObject jsonPlaceLocation = jsonPlace.getJSONObject("geometry").getJSONObject("location");
+                LatLng addressLocation = new LatLng(Double.parseDouble(jsonPlaceLocation.getString("lat")),Double.parseDouble(jsonPlaceLocation.getString("lng")));
+                Place place = new Place(i,jsonPlace.getString("name"),jsonPlace.getString("vicinity"),addressLocation);
+                places.add(place);
+            }
+
+            /*
             JSONArray jsonFirstPlace = json.getJSONArray("results");
             int random_number_place = new Random().nextInt(jsonFirstPlace.length());
             JSONObject jsonPlace = jsonFirstPlace.getJSONObject(random_number_place);
             JSONObject jsonPlaceLocation = jsonPlace.getJSONObject("geometry").getJSONObject("location");
             LatLng addressLocation = new LatLng(Double.parseDouble(jsonPlaceLocation.getString("lat")),Double.parseDouble(jsonPlaceLocation.getString("lng")));
             Place firstPlaceFound = new Place(1,jsonPlace.getString("name"),jsonPlace.getString("vicinity"),addressLocation);
-            return firstPlaceFound;
+            return firstPlaceFound; */
 
             /* get first in list
             for (int i=0; i<jsonFirstPlace.length(); i++){
@@ -47,6 +60,7 @@ public class JSONPlaceGetter implements PlaceGetter{
                 Place firstPlaceFound = new Place(i,jsonPlace.getString("name"),jsonPlace.getString("vicinity"),addressLocation);
                 return firstPlaceFound;
             }*/
+            return places;
 
 
         }catch (JSONException e){

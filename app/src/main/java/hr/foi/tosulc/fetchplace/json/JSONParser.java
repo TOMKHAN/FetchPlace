@@ -31,7 +31,7 @@ public class JSONParser {
         try {
             // defaultHttpClient
             DefaultHttpClient httpClient = new DefaultHttpClient();
-            String urlWithoudSpaces = url.replace(" ","%20");
+            String urlWithoudSpaces = url.replace(" ","%20").replace("|","%7C");
             HttpPost httpPost = new HttpPost(urlWithoudSpaces);
 
             HttpResponse httpResponse = httpClient.execute(httpPost);

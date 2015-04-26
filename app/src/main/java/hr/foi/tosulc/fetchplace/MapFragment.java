@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,6 +21,8 @@ import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+
+import java.util.ArrayList;
 
 import hr.foi.tosulc.fetchplace.adapters.PlaceAdapter;
 import hr.foi.tosulc.fetchplace.helpers.ConnectionDetector;
@@ -131,6 +134,7 @@ public class MapFragment extends Fragment implements GoogleMap.OnMarkerClickList
 
     public static void addLocationMarker(LatLng latlng, String name, String address) {
         mMap.addMarker(createCustomMarker(latlng, name, address));
+
     }
 
     public static MarkerOptions createCustomMarker(LatLng latLng, String name, String address) {
@@ -156,7 +160,7 @@ public class MapFragment extends Fragment implements GoogleMap.OnMarkerClickList
         return place;
     }
 
-    private class GetNearestLocationCoordinates extends AsyncTask<LatLng, Void, Place> {
+    private class GetNearestLocationCoordinates extends AsyncTask<LatLng, Void, ArrayList<Place>> {
         ProgressDialog progressDialog;
 
         @Override
@@ -170,23 +174,29 @@ public class MapFragment extends Fragment implements GoogleMap.OnMarkerClickList
         }
 
         @Override
-        protected Place doInBackground(LatLng... location) {
-            Place place = new JSONPlaceGetter().getLocationPlace(location[0], getActivity().getApplicationContext());
-            return place;
+        protected ArrayList<Place> doInBackground(LatLng... location) {
+            ArrayList<Place> places = new JSONPlaceGetter().getLocationPlace(location[0], getActivity().getApplicationContext());
+            return places;
         }
 
         @Override
-        protected void onPostExecute(Place place) {
+        protected void onPostExecute(ArrayList<Place> places) {
             //save in DB
             PlaceAdapter pa = new PlaceAdapter(getActivity().getApplicationContext());
             pa.openToWrite();
-            pa.updatePlace(place);
+            for (Place p : places) {
+                pa.updatePlace(p);
+            }
             pa.close();
 
             //animation to location
-            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(place.getLocation(), ZOOM_LEVEL));
-            addLocationMarker(place.getLocation(), place.getName(), place.getAddress());
-
+            if (places != null) {
+                for (Place p : places) {
+                    addLocationMarker(p.getLocation(), p.getName(), p.getAddress());
+                    Log.w("Repsly", "Dodano: " + p.getName());
+                }
+                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(places.get(0).getLocation(), ZOOM_LEVEL));
+            }
             // Dismiss the progress dialog
             if (progressDialog.isShowing()) {
                 progressDialog.dismiss();
